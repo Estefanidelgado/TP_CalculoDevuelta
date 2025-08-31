@@ -1,13 +1,15 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
+import javax.swing.table.DefaultTableModel;
 
 
 
@@ -18,6 +20,8 @@ public class FrmDevuelta extends JFrame {
     private int[] existencia = new int[denominacion.length];
     private JComboBox cmbDenominacion;  
     private JTextField txtExistencia;
+    private JTextField txtDevuelta; 
+    private String[] encabezado = new String[]{" Cantidad", "Presentacion","Denominacion"};
     
     //metodo constructor
    public FrmDevuelta() {
@@ -45,7 +49,7 @@ public class FrmDevuelta extends JFrame {
      for (int i=0; i<denominacion.length; i ++){
        strDenominacion[i] = String.valueOf(denominacion[i]);     
       }
-     cmbDenominacion.setModel(new DefaultComboBoxModel(strDenominacion));
+    cmbDenominacion.setModel(new DefaultComboBoxModel(strDenominacion));
 
      // agregar un boton 
     JButton btnActualizarExistencia = new JButton("Äctualizar Existencia");
@@ -64,9 +68,38 @@ public class FrmDevuelta extends JFrame {
       public void actionPerformed(ActionEvent e) {
         consultarExistencia();
        
-      }});
+      }
+    });
 
+    btnActualizarExistencia.addActionListener(new ActionListener(){
 
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        actualizarExistencia();
+      }
+    });
+
+    //agregar metodos para leer la devuelta
+    JLabel lblDevuelta =new JLabel("Devuelta:");
+     lblDevuelta.setBounds(10,70,100,25);
+     getContentPane().add(lblDevuelta);
+     // Agregar una caja de texto 
+    txtDevuelta = new JTextField();
+    txtDevuelta.setBounds(150,70,100,25);
+    getContentPane().add(txtDevuelta);
+    // agregar un boton 
+    JButton btnDevuelta = new JButton("Calcular");
+    btnDevuelta.setBounds(260,70,100,25);
+    getContentPane().add(btnDevuelta);
+    //agregar rejilla de datos
+    JTable tblDevuelta = new JTable();
+    JScrollPane spDevuelta = new JScrollPane(tblDevuelta);
+    spDevuelta.setBounds(10,100,450,200);
+    getContentPane().add(spDevuelta);
+
+    //asignar el modelo de datos de la rejilla
+    DefaultTableModel dtm = new DefaultTableModel(null, encabezado);
+    tblDevuelta.setModel(dtm);
 
     }
 
@@ -78,7 +111,14 @@ public class FrmDevuelta extends JFrame {
 
 
   }
+  private void actualizarExistencia(){
+    int existenciaActual = Integer.parseInt(txtExistencia.getText());
+    existencia[cmbDenominacion.getSelectedIndex()] = existenciaActual;
+  
 
+
+
+  }
 
 }
 
